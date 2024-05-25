@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.base.SettingActivity"
     android:background="@color/white"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.base.SettingActivity">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:elevation="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:layout_width="match_parent"
@@ -29,35 +29,35 @@
                 android:elevation="0dp"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_back"
-                    android:backgroundTint="@android:color/transparent"
-                    android:contentDescription="@string/back_button"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:backgroundTint="@android:color/transparent"
+                android:contentDescription="@string/back_button"
+                android:src="@drawable/icon_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings"
-                    android:fontFamily="@font/inter"
-                    android:textSize="@dimen/_18ssp"
-                    android:textColor="@color/textColor"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/back"
-                    app:layout_constraintBottom_toBottomOf="@id/back" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="@string/settings"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintBottom_toBottomOf="@id/back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/back" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -73,53 +73,54 @@
                 android:id="@+id/unitLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/unit"
+                    android:layout_marginStart="@dimen/_20sdp"
                     android:fontFamily="@font/inter"
-                    android:textColor="#9C9EAA"
-                    android:textSize="@dimen/_10ssp"
+                    android:text="@string/unit"
                     android:textAllCaps="true"
-                    android:layout_marginStart="@dimen/_20sdp"/>
+                    android:textColor="#9C9EAA"
+                    android:textSize="@dimen/_10ssp" />
 
                 <LinearLayout
                     android:id="@+id/temperatureUnit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:paddingVertical="@dimen/_15sdp"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_15sdp"
                     android:weightSum="2">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/temperature_units"
+                        android:layout_weight="1"
                         android:fontFamily="@font/inter_medium"
+                        android:text="@string/temperature_units"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        android:layout_weight="1"/>
+                        android:textSize="@dimen/_13ssp" />
 
                     <TextView
                         android:id="@+id/temperatureSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:drawableEndCompat="@drawable/icon_dropdown"
-                        app:drawableTint="@color/defaultColor"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center|end"
                         android:text="@string/celsius"
                         android:textColor="@color/defaultColor"
-                        android:fontFamily="@font/inter"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:gravity="center|end" />
+                        app:drawableEndCompat="@drawable/icon_dropdown"
+                        app:drawableTint="@color/defaultColor" />
                 </LinearLayout>
 
 
@@ -127,35 +128,36 @@
                     android:id="@+id/windSpeedUnit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
-                    android:paddingVertical="@dimen/_15sdp"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_15sdp"
                     android:weightSum="2">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/wind_speed_units"
+                        android:layout_weight="1"
                         android:fontFamily="@font/inter_medium"
+                        android:text="@string/wind_speed_units"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        android:layout_weight="1"/>
+                        android:textSize="@dimen/_13ssp" />
 
                     <TextView
                         android:id="@+id/windSpeedSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:drawableEndCompat="@drawable/icon_dropdown"
-                        app:drawableTint="@color/defaultColor"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center|end"
                         android:text="@string/meters_per_second"
                         android:textColor="@color/defaultColor"
-                        android:fontFamily="@font/inter"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:gravity="center|end" />
+                        app:drawableEndCompat="@drawable/icon_dropdown"
+                        app:drawableTint="@color/defaultColor" />
                 </LinearLayout>
 
 
@@ -163,35 +165,36 @@
                     android:id="@+id/atmosphericPressureUnit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
-                    android:paddingVertical="@dimen/_15sdp"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_20sdp"
+                    android:paddingVertical="@dimen/_15sdp"
                     android:weightSum="2">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/atmospheric_pressure_unit"
+                        android:layout_weight="1"
                         android:fontFamily="@font/inter_medium"
+                        android:text="@string/atmospheric_pressure_unit"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                        android:layout_weight="1"/>
+                        android:textSize="@dimen/_13ssp" />
 
                     <TextView
                         android:id="@+id/atmosphericPressureSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:drawableEndCompat="@drawable/icon_dropdown"
-                        app:drawableTint="@color/defaultColor"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:drawablePadding="@dimen/_5sdp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center|end"
                         android:text="@string/hPa"
                         android:textColor="@color/defaultColor"
-                        android:fontFamily="@font/inter"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:gravity="center|end" />
+                        app:drawableEndCompat="@drawable/icon_dropdown"
+                        app:drawableTint="@color/defaultColor" />
                 </LinearLayout>
 
             </LinearLayout>

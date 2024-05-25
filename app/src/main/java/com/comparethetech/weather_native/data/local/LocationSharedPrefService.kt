@@ -1,12 +1,13 @@
 package com.comparethetech.weather_native.data.local
 
 import android.content.Context
-import com.google.gson.Gson
 import com.comparethetech.weather_native.model.CurrentLocationData
 import com.comparethetech.weather_native.util.AppConstants
+import com.google.gson.Gson
 
 class LocationSharedPrefService(context: Context) {
-    private val sharedPref = context.getSharedPreferences(AppConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE)
+    private val sharedPref =
+        context.getSharedPreferences(AppConstants.SHARED_PREF_NAME, Context.MODE_PRIVATE)
     private val gson = Gson()
 
     fun sendData(locationData: CurrentLocationData) {

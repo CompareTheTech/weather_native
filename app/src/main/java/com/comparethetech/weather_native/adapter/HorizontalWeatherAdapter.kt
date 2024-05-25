@@ -16,7 +16,8 @@ class HorizontalWeatherAdapter(private val weatherDataList: List<WeatherHourlyCa
     Adapter<HorizontalWeatherAdapter.HorizontalWeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalWeatherViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.weather_time_card_layout, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.weather_time_card_layout, parent, false)
         return HorizontalWeatherViewHolder(view)
     }
 
@@ -26,7 +27,7 @@ class HorizontalWeatherAdapter(private val weatherDataList: List<WeatherHourlyCa
 
     override fun onBindViewHolder(holder: HorizontalWeatherViewHolder, position: Int) {
         val currWeatherData = weatherDataList[position]
-        if(currWeatherData.isActive) {
+        if (currWeatherData.isActive) {
             holder.cardParent.setBackgroundResource(R.drawable.active_weather_time_column_style)
             holder.weatherTime.setText(R.string.now)
             holder.weatherTime.setTextColor(Color.parseColor("#303345"))

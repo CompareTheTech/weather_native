@@ -1,17 +1,15 @@
 package com.comparethetech.weather_native.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.launch
 import com.comparethetech.weather_native.R
 import com.comparethetech.weather_native.data.RetrofitHelper
 import com.comparethetech.weather_native.data.local.SettingsSharedPrefService
@@ -23,7 +21,6 @@ import com.comparethetech.weather_native.data.repository.UpcomingDaysSharedPrefR
 import com.comparethetech.weather_native.databinding.FragmentUpcomingDaysBinding
 import com.comparethetech.weather_native.model.SettingsData
 import com.comparethetech.weather_native.model.nextweathermodel.nextsevendays.NextSevenDaysWeather
-import com.comparethetech.weather_native.ui.liveDate.SearchCitiesLiveData
 import com.comparethetech.weather_native.ui.liveDate.SettingsLiveData
 import com.comparethetech.weather_native.util.AppConstants
 import com.comparethetech.weather_native.util.InternetConnection
@@ -35,6 +32,8 @@ import com.comparethetech.weather_native.viewmodel.UpcomingDaysSharedPrefViewMod
 import com.comparethetech.weather_native.viewmodel.viewmodelfactory.NextSevenDaysWeatherViewModelFactory
 import com.comparethetech.weather_native.viewmodel.viewmodelfactory.SettingsSharedPrefViewModelFactory
 import com.comparethetech.weather_native.viewmodel.viewmodelfactory.UpcomingDaysSharedPrefViewModelFactory
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import java.util.TimeZone
 
 class UpcomingDaysFragment : Fragment() {

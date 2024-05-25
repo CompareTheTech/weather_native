@@ -35,24 +35,31 @@ class SettingActivity : AppCompatActivity() {
         initSettingsSharedPrefThing()
         //Getting data from Settings ViewModel
         settingsData = settingsSharedPrefViewModel.getData()
-        if(settingsData != null) {
+        if (settingsData != null) {
             setDataToUI()
         } else {
             settingsData = SettingsData()
         }
 
-        binding.temperatureUnit.setOnClickListener {showTemperatureUnitPopup(binding.temperatureSpinner)}
-        binding.windSpeedUnit.setOnClickListener {showWindSpeedUnitPopup(binding.windSpeedSpinner)}
-        binding.atmosphericPressureUnit.setOnClickListener {showAtmosphericPressureUnitPopup(binding.atmosphericPressureSpinner)}
+        binding.temperatureUnit.setOnClickListener { showTemperatureUnitPopup(binding.temperatureSpinner) }
+        binding.windSpeedUnit.setOnClickListener { showWindSpeedUnitPopup(binding.windSpeedSpinner) }
+        binding.atmosphericPressureUnit.setOnClickListener {
+            showAtmosphericPressureUnitPopup(
+                binding.atmosphericPressureSpinner
+            )
+        }
 
-        binding.back.setOnClickListener {onBackPressedDispatcher.onBackPressed()}
+        binding.back.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
     }
 
     private fun initSettingsSharedPrefThing() {
         val settingsSharedPrefService = SettingsSharedPrefService(this)
         val settingsSharedPrefRepository = SettingsSharedPrefRepository(settingsSharedPrefService)
 
-        settingsSharedPrefViewModel = ViewModelProvider(this@SettingActivity, SettingsSharedPrefViewModelFactory(settingsSharedPrefRepository))[SettingsSharedPrefViewModel::class.java]
+        settingsSharedPrefViewModel = ViewModelProvider(
+            this@SettingActivity,
+            SettingsSharedPrefViewModelFactory(settingsSharedPrefRepository)
+        )[SettingsSharedPrefViewModel::class.java]
     }
 
     private fun setDataToUI() {
@@ -93,6 +100,7 @@ class SettingActivity : AppCompatActivity() {
 
         popup.show()
     }
+
     private fun showWindSpeedUnitPopup(view: View) {
         val popup = PopupMenu(this, view)
         popup.inflate(R.menu.windsped_unit_menu)
@@ -127,6 +135,7 @@ class SettingActivity : AppCompatActivity() {
 
         popup.show()
     }
+
     private fun showAtmosphericPressureUnitPopup(view: View) {
         val popup = PopupMenu(this, view)
         popup.inflate(R.menu.atmospheric_pressure_unit_menu)

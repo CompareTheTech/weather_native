@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.comparethetech.weather_native.data.repository.SettingsSharedPrefRepository
 import com.comparethetech.weather_native.model.SettingsData
 
-class SettingsSharedPrefViewModel(private val settingsRepository: SettingsSharedPrefRepository): ViewModel() {
+class SettingsSharedPrefViewModel(private val settingsRepository: SettingsSharedPrefRepository) :
+    ViewModel() {
 
     fun getData(): SettingsData? {
         return settingsRepository.getData()

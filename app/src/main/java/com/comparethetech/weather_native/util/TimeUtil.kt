@@ -26,7 +26,8 @@ class TimeUtil {
                     val outputFormat = SimpleDateFormat("EEEE", Locale.US)
                     return outputFormat.format(date)
                 }
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+            }
 
             return ""
         }

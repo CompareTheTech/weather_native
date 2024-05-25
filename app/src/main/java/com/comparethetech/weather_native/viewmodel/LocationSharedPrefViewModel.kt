@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.comparethetech.weather_native.data.repository.LocationSharedPrefRepository
 import com.comparethetech.weather_native.model.CurrentLocationData
 
-class LocationSharedPrefViewModel(private val locationSharedPrefRepository: LocationSharedPrefRepository): ViewModel() {
+class LocationSharedPrefViewModel(private val locationSharedPrefRepository: LocationSharedPrefRepository) :
+    ViewModel() {
 
     fun getData(): CurrentLocationData? {
         return locationSharedPrefRepository.getData()

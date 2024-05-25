@@ -12,10 +12,17 @@ class HourlyWeatherRepository(private val service: HourlyWeatherService) {
     val weatherLiveData: LiveData<HourlyWeatherModel>
         get() = hourlyWeatherLiveData
 
-    suspend fun getWeather(lat: String, lon: String, hourly: String, weatherCode: String, forecastDays: Int, timezone: String) {
+    suspend fun getWeather(
+        lat: String,
+        lon: String,
+        hourly: String,
+        weatherCode: String,
+        forecastDays: Int,
+        timezone: String
+    ) {
         val result = service.getWeather(lat, lon, hourly, weatherCode, forecastDays, timezone)
 
-        if(result.body() != null) {
+        if (result.body() != null) {
             hourlyWeatherLiveData.value = result.body()
         }
     }

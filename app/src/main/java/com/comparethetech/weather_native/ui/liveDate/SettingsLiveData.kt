@@ -9,7 +9,7 @@ object SettingsLiveData {
 
     fun getSettingsLiveData(): LiveData<SettingsData> = settingsLiveData
 
-    fun updateSettingsData (newSettingsData: SettingsData) {
+    fun updateSettingsData(newSettingsData: SettingsData) {
         settingsLiveData.value = newSettingsData
     }
 }

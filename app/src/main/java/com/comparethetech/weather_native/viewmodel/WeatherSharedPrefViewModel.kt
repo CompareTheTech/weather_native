@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.comparethetech.weather_native.data.repository.WeatherSharedPrefRepository
 import com.comparethetech.weather_native.model.weathermodel.WeatherData
 
-class WeatherSharedPrefViewModel(private val weatherRepository: WeatherSharedPrefRepository): ViewModel() {
+class WeatherSharedPrefViewModel(private val weatherRepository: WeatherSharedPrefRepository) :
+    ViewModel() {
 
     fun getData(): WeatherData? {
         return weatherRepository.getData()

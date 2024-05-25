@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.comparethetech.weather_native.data.repository.NextSevenDaysWeatherRepository
 import com.comparethetech.weather_native.viewmodel.NextSevenDaysWeatherViewModel
 
-class NextSevenDaysWeatherViewModelFactory(private val repository: NextSevenDaysWeatherRepository) : ViewModelProvider.Factory {
+class NextSevenDaysWeatherViewModelFactory(private val repository: NextSevenDaysWeatherRepository) :
+    ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

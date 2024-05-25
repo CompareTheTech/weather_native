@@ -13,9 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import com.comparethetech.weather_native.BuildConfig
 import com.comparethetech.weather_native.R
 import com.comparethetech.weather_native.adapter.SearchCitiesAdapter
@@ -32,6 +29,9 @@ import com.comparethetech.weather_native.viewmodel.GeoLocationViewModel
 import com.comparethetech.weather_native.viewmodel.LocationSharedPrefViewModel
 import com.comparethetech.weather_native.viewmodel.viewmodelfactory.GeoLocationViewModelFactory
 import com.comparethetech.weather_native.viewmodel.viewmodelfactory.LocationSharedPrefViewModelFactory
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.Normalizer
 
 class SearchActivity : AppCompatActivity() {
@@ -61,15 +61,19 @@ class SearchActivity : AppCompatActivity() {
 
         //Observing LiveData from GeoLocationViewModel
         geoLocationViewModel.locationLiveData.observe(this@SearchActivity) {
-            if(!it.isEmpty()) {
+            if (!it.isEmpty()) {
                 citiesList = it
 
-                for(city in citiesList) {
-                    if(locationSharedPrefData != null &&
+                for (city in citiesList) {
+                    if (locationSharedPrefData != null &&
                         areEqualIgnoringDiacritics(city.name, locationSharedPrefData.city) &&
                         areEqualIgnoringDiacritics(city.country, locationSharedPrefData.country)
                     ) {
-                        if(city.state.isNullOrEmpty() || areEqualIgnoringDiacritics(city.state, locationSharedPrefData.region)) {
+                        if (city.state.isNullOrEmpty() || areEqualIgnoringDiacritics(
+                                city.state,
+                                locationSharedPrefData.region
+                            )
+                        ) {
                             city.alreadyExist = true
                             break
                         }
@@ -89,20 +93,28 @@ class SearchActivity : AppCompatActivity() {
         //On Press Back Navigation Button
         onBackPressedDispatcher.addCallback(this) {
             finish()
-            if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout)
             } else {
-                overrideActivityTransition(Activity.OVERRIDE_TRANSITION_CLOSE, R.anim.fadein, R.anim.fadeout)
+                overrideActivityTransition(
+                    Activity.OVERRIDE_TRANSITION_CLOSE,
+                    R.anim.fadein,
+                    R.anim.fadeout
+                )
             }
         }
 
         //On Press Back ImageButton
         binding.cancelSearch.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
-            if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout)
             } else {
-                overrideActivityTransition(Activity.OVERRIDE_TRANSITION_CLOSE, R.anim.fadein, R.anim.fadeout)
+                overrideActivityTransition(
+                    Activity.OVERRIDE_TRANSITION_CLOSE,
+                    R.anim.fadein,
+                    R.anim.fadeout
+                )
             }
         }
 
@@ -111,12 +123,12 @@ class SearchActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 binding.citiesRecyclerView.visibility = View.GONE
 
-                if(query != null) {
+                if (query != null) {
                     binding.searchPlaceholderTV.visibility = View.VISIBLE
 
-                    if(query.trim().isEmpty()) {
+                    if (query.trim().isEmpty()) {
                         binding.searchPlaceholderTV.visibility = View.GONE
-                    } else if(query.trim().length <= 2) {
+                    } else if (query.trim().length <= 2) {
                         binding.searchPlaceholderTV.text = getString(R.string.search_your_city)
                     } else {
                         binding.searchPlaceholderTV.text = getString(R.string.searching)
@@ -168,12 +180,12 @@ class SearchActivity : AppCompatActivity() {
             override fun onQueryTextChange(newCity: String?): Boolean {
                 binding.citiesRecyclerView.visibility = View.GONE
 
-                if(newCity != null) {
+                if (newCity != null) {
                     binding.searchPlaceholderTV.visibility = View.VISIBLE
 
-                    if(newCity.trim().isEmpty()) {
+                    if (newCity.trim().isEmpty()) {
                         binding.searchPlaceholderTV.visibility = View.GONE
-                    } else if(newCity.trim().length <= 2) {
+                    } else if (newCity.trim().length <= 2) {
                         binding.searchPlaceholderTV.text = getString(R.string.search_your_city)
                     } else {
                         binding.searchPlaceholderTV.text = getString(R.string.click_search)
@@ -188,7 +200,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun removeDiacritics(input: String): String {
-        if(input.isEmpty()) return ""
+        if (input.isEmpty()) return ""
         val normalizedString = Normalizer.normalize(input, Normalizer.Form.NFD)
         return "\\p{InCombiningDiacriticalMarks}+".toRegex().replace(normalizedString, "")
     }
@@ -203,16 +215,24 @@ class SearchActivity : AppCompatActivity() {
         val locationSharedPrefService = LocationSharedPrefService(this)
         val locationSharedPrefRepository = LocationSharedPrefRepository(locationSharedPrefService)
 
-        locationSharedPrefViewModel = ViewModelProvider(this@SearchActivity, LocationSharedPrefViewModelFactory(locationSharedPrefRepository))[LocationSharedPrefViewModel::class.java]
+        locationSharedPrefViewModel = ViewModelProvider(
+            this@SearchActivity,
+            LocationSharedPrefViewModelFactory(locationSharedPrefRepository)
+        )[LocationSharedPrefViewModel::class.java]
     }
 
     private fun initGeoLocationAPIThing() {
         //Initialization of GeoLocationRepository and GeoLocationServices
-        val geoLocationService = RetrofitHelper.getInstance(AppConstants.OpenWeatherMap_API_BASE_URL).create(GeoLocationService::class.java)
+        val geoLocationService =
+            RetrofitHelper.getInstance(AppConstants.OpenWeatherMap_API_BASE_URL)
+                .create(GeoLocationService::class.java)
         val geoLocationRepository = GeoLocationRepository(geoLocationService)
 
         //Initialization of GeoLocationViewModel
-        geoLocationViewModel = ViewModelProvider(this@SearchActivity, GeoLocationViewModelFactory(geoLocationRepository))[GeoLocationViewModel::class.java]
+        geoLocationViewModel = ViewModelProvider(
+            this@SearchActivity,
+            GeoLocationViewModelFactory(geoLocationRepository)
+        )[GeoLocationViewModel::class.java]
     }
 
     private fun setStatusBarColor() {
@@ -220,7 +240,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun setSearchCitiesAdapter() {
-        binding.citiesRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.citiesRecyclerView.layoutManager =
+            LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
         val adapter = SearchCitiesAdapter(citiesList)
         binding.citiesRecyclerView.adapter = adapter

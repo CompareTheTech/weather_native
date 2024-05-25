@@ -15,7 +15,7 @@ class GeoLocationRepository(private val geoLocationService: GeoLocationService) 
     suspend fun getLocation(q: String, limit: Int, appId: String) {
         val result = geoLocationService.getLocation(q, limit, appId)
 
-        if(result.body() != null) {
+        if (result.body() != null) {
             geoLocationLiveData.postValue(result.body())
         }
     }

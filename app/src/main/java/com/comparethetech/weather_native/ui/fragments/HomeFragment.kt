@@ -8,19 +8,17 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.launch
 import com.comparethetech.weather_native.BuildConfig
 import com.comparethetech.weather_native.R
 import com.comparethetech.weather_native.adapter.HorizontalWeatherAdapter
@@ -67,6 +65,8 @@ import com.comparethetech.weather_native.viewmodel.viewmodelfactory.LocationShar
 import com.comparethetech.weather_native.viewmodel.viewmodelfactory.SettingsSharedPrefViewModelFactory
 import com.comparethetech.weather_native.viewmodel.viewmodelfactory.WeatherSharedPrefViewModelFactory
 import com.comparethetech.weather_native.viewmodel.viewmodelfactory.WeatherViewModelFactory
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -130,7 +130,7 @@ class HomeFragment : Fragment() {
 
         //Observing the livedata from WeatherAPI
         weatherViewModel.weatherLiveData.observe(requireActivity()) {
-            if(it != null) {
+            if (it != null) {
                 setWeatherDataToUI(it)
                 weatherSharedPrefViewModel.sendData(it)
             }
@@ -151,8 +151,8 @@ class HomeFragment : Fragment() {
 
         //Observing LiveData from CurrentLocationViewModel
         currentLocationViewModel.approximateLocationLiveData.observe(requireActivity()) {
-            if(it != null) {
-                if(locationSharedPrefData == null || locationSharedPrefData!!.loc != it.loc && locationSharedPrefData!!.ip.isNotEmpty()) {
+            if (it != null) {
+                if (locationSharedPrefData == null || locationSharedPrefData!!.loc != it.loc && locationSharedPrefData!!.ip.isNotEmpty()) {
                     locationSharedPrefViewModel.sendData(it)
                     locationSharedPrefData = it
                     setLocationDataToUI(it)
@@ -163,8 +163,9 @@ class HomeFragment : Fragment() {
         }
 
         citiesDataObserver = Observer {
-            val state = it.state ?: ""
-            val data = CurrentLocationData(it.name, it.country, "", "${it.lat},${it.lon}", "", state, "")
+            val state = it.state
+            val data =
+                CurrentLocationData(it.name, it.country, "", "${it.lat},${it.lon}", "", state, "")
             locationSharedPrefViewModel.sendData(data)
             locationSharedPrefData = locationSharedPrefViewModel.getData()
             setLocationDataToUI(data)
@@ -175,7 +176,7 @@ class HomeFragment : Fragment() {
 
         //Observing the livedata from HourlyWeatherAPI
         hourlyWeatherViewModel.weatherLiveData.observe(requireActivity()) {
-            if(it != null) {
+            if (it != null) {
                 hourlyWeatherData = it
                 changeWeatherToToday()
             }
@@ -185,19 +186,21 @@ class HomeFragment : Fragment() {
         callingHourlyWeatherAPI(locationSharedPrefData)
 
         binding.settings.setOnClickListener { moveToSettings() }
-        binding.search.setOnClickListener {moveToSearch()}
-        binding.next7days.setOnClickListener { locationSharedPrefData?.loc?.let { it1 ->
-            navToUpcomingDaysFrag(
-                it1
-            )
-        } }
+        binding.search.setOnClickListener { moveToSearch() }
+        binding.next7days.setOnClickListener {
+            locationSharedPrefData?.loc?.let { it1 ->
+                navToUpcomingDaysFrag(
+                    it1
+                )
+            }
+        }
         binding.today.setOnClickListener { changeWeatherToToday() }
         binding.tomorrow.setOnClickListener { changeWeatherToTomorrow() }
     }
 
     private fun callingHourlyWeatherAPI(locationData: CurrentLocationData?) {
         val loc = locationData?.loc?.split(",")
-        if(loc != null) {
+        if (loc != null) {
             val lat = loc[0]
             val lon = loc[1]
             lifecycleScope.launch {
@@ -247,7 +250,7 @@ class HomeFragment : Fragment() {
 
     private fun callingWeatherAPI(locationData: CurrentLocationData?) {
         val loc = locationData?.loc?.split(",")
-        if(loc != null) {
+        if (loc != null) {
             val lat = loc[0]
             val lon = loc[1]
 
@@ -288,30 +291,32 @@ class HomeFragment : Fragment() {
 
     private fun setLocationDataToUI(currentLocation: CurrentLocationData) {
         binding.cityName.text = currentLocation.city
-        binding.countryName.text = CountryNameByCode.getCountryNameByCode(requireActivity(), currentLocation.country)
+        binding.countryName.text =
+            CountryNameByCode.getCountryNameByCode(requireActivity(), currentLocation.country)
     }
 
     private fun setWeatherDataToUI(weatherData: WeatherData) {
         var temp = weatherData.main.temp
 
-        if(settingsData.temperatureUnit == resources.getString(R.string.fahrenheit)) {
-            temp = (temp-273.15)*1.8+32
+        if (settingsData.temperatureUnit == resources.getString(R.string.fahrenheit)) {
+            temp = (temp - 273.15) * 1.8 + 32
         } else {
             temp -= 273.15
         }
 
-        if(settingsData.atmosphericPressureUnit == resources.getString(R.string.atm)) {
+        if (settingsData.atmosphericPressureUnit == resources.getString(R.string.atm)) {
             val pressure = weatherData.main.pressure.toDouble() / 1013.25
             binding.atmosphericPressureValue.text = String.format("%.4f", pressure)
         } else {
-            binding.atmosphericPressureValue.text = String.format("%.0f", weatherData.main.pressure.toDouble())
+            binding.atmosphericPressureValue.text =
+                String.format("%.0f", weatherData.main.pressure.toDouble())
         }
 
-        if(settingsData.windSpeedUnit == resources.getString(R.string.miles_per_hour)) {
-            val speed = weatherData.wind.speed*2.237
+        if (settingsData.windSpeedUnit == resources.getString(R.string.miles_per_hour)) {
+            val speed = weatherData.wind.speed * 2.237
             binding.windValue.text = String.format("%.2f", speed)
-        } else if(settingsData.windSpeedUnit == resources.getString(R.string.kilometers_per_hour)) {
-            val speed = weatherData.wind.speed*3.6
+        } else if (settingsData.windSpeedUnit == resources.getString(R.string.kilometers_per_hour)) {
+            val speed = weatherData.wind.speed * 3.6
             binding.windValue.text = String.format("%.2f", speed)
         } else {
             binding.windValue.text = weatherData.wind.speed.toString()
@@ -324,7 +329,10 @@ class HomeFragment : Fragment() {
         binding.weatherType.text = weatherData.weather.first().main
     }
 
-    private fun setHourlyWeatherDataToUI(hourlyWeatherData: HourlyWeatherModel, isToday: Boolean): Int {
+    private fun setHourlyWeatherDataToUI(
+        hourlyWeatherData: HourlyWeatherModel,
+        isToday: Boolean
+    ): Int {
         val hourlyWeather = hourlyWeatherData.hourly
 
         val time = hourlyWeather.time
@@ -335,8 +343,8 @@ class HomeFragment : Fragment() {
 
         var position = 0
 
-        if(isToday) {
-            for (i in 0 .. 23) {
+        if (isToday) {
+            for (i in 0..23) {
                 var currTime = TimeUtil.extractTimeFromString(time[i])
                 val currWeather = weather[i]
                 val weatherIcon = WeatherCodeToIcon.getWeatherIcon(weatherCode[i])
@@ -360,7 +368,7 @@ class HomeFragment : Fragment() {
 
             return position
         } else {
-            for (i in 24 .. 47) {
+            for (i in 24..47) {
                 val currTime = TimeUtil.extractTimeFromString(time[i])
                 val currWeather = weather[i]
                 val weatherIcon = WeatherCodeToIcon.getWeatherIcon(weatherCode[i])
@@ -388,11 +396,10 @@ class HomeFragment : Fragment() {
     }
 
 
-
     private fun setSettingDataToUI(settingsData: SettingsData) {
         var temp = binding.weatherNumericValue.text.toString().toDouble()
 
-        if(binding.weatherUnit.text.toString() != settingsData.temperatureUnit ) {
+        if (binding.weatherUnit.text.toString() != settingsData.temperatureUnit) {
             if (settingsData.temperatureUnit == resources.getString(R.string.celsius)) {
                 binding.weatherUnit.text = resources.getString(R.string.celsius)
                 temp = (temp - 32) * 5 / 9
@@ -403,7 +410,7 @@ class HomeFragment : Fragment() {
             binding.weatherNumericValue.text = String.format("%.0f", temp)
         }
 
-        if(binding.atmosphericPressureUnit.text.toString() != settingsData.atmosphericPressureUnit) {
+        if (binding.atmosphericPressureUnit.text.toString() != settingsData.atmosphericPressureUnit) {
             if (settingsData.atmosphericPressureUnit == resources.getString(R.string.atm)) {
                 val pressure = binding.atmosphericPressureValue.text.toString().toDouble() / 1013.25
                 binding.atmosphericPressureValue.text = String.format("%.4f", pressure)
@@ -414,28 +421,30 @@ class HomeFragment : Fragment() {
             binding.atmosphericPressureUnit.text = settingsData.atmosphericPressureUnit
         }
 
-        if(binding.windUnit.text.toString() != settingsData.windSpeedUnit) {
+        if (binding.windUnit.text.toString() != settingsData.windSpeedUnit) {
             val prevWindUnit = binding.windUnit.text.toString()
             val prevWindSpeed = binding.windValue.text.toString().toDouble()
             val newWindSpeed: Double
-            if(settingsData.windSpeedUnit == resources.getString(R.string.miles_per_hour)) {
-                newWindSpeed = if(prevWindUnit == resources.getString(R.string.kilometers_per_hour)) {
-                    prevWindSpeed * 0.621371
-                } else {
-                    prevWindSpeed * 2.23694
-                }
-            } else if(settingsData.windSpeedUnit == resources.getString(R.string.kilometers_per_hour)) {
-                newWindSpeed = if(prevWindUnit == resources.getString(R.string.miles_per_hour)) {
+            if (settingsData.windSpeedUnit == resources.getString(R.string.miles_per_hour)) {
+                newWindSpeed =
+                    if (prevWindUnit == resources.getString(R.string.kilometers_per_hour)) {
+                        prevWindSpeed * 0.621371
+                    } else {
+                        prevWindSpeed * 2.23694
+                    }
+            } else if (settingsData.windSpeedUnit == resources.getString(R.string.kilometers_per_hour)) {
+                newWindSpeed = if (prevWindUnit == resources.getString(R.string.miles_per_hour)) {
                     prevWindSpeed * 1.60934
                 } else {
                     prevWindSpeed * 3.6
                 }
             } else {
-                newWindSpeed = if(prevWindUnit == resources.getString(R.string.kilometers_per_hour)) {
-                    prevWindSpeed / 3.6
-                } else {
-                    prevWindSpeed / 2.23694
-                }
+                newWindSpeed =
+                    if (prevWindUnit == resources.getString(R.string.kilometers_per_hour)) {
+                        prevWindSpeed / 3.6
+                    } else {
+                        prevWindSpeed / 2.23694
+                    }
             }
 
             binding.windValue.text = String.format("%.2f", newWindSpeed)
@@ -445,19 +454,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun setWeatherIcon(weatherType: WeatherType) {
-        if(weatherType.id in 200..232) { //Thunderstorm
+        if (weatherType.id in 200..232) { //Thunderstorm
             binding.weatherIcon.setImageResource(R.drawable.icon_weather_thunderstorm_cloud)
-        } else if(weatherType.id in 300..321) { //Drizzle
+        } else if (weatherType.id in 300..321) { //Drizzle
             binding.weatherIcon.setImageResource(R.drawable.icon_weather_rain_cloud)
-        } else if(weatherType.id in 500..531) { //Rain
+        } else if (weatherType.id in 500..531) { //Rain
             binding.weatherIcon.setImageResource(R.drawable.icon_weather_sun_rain_cloud)
-        } else if(weatherType.id in 701..781) { //Atmosphere
+        } else if (weatherType.id in 701..781) { //Atmosphere
             binding.weatherIcon.setImageResource(R.drawable.icon_weather_cloud_sun)
-        } else if(weatherType.id in 600..622) { //Snow
+        } else if (weatherType.id in 600..622) { //Snow
             binding.weatherIcon.setImageResource(R.drawable.icon_weather_snow_cloud)
-        } else if(weatherType.id == 800) { //Clear
+        } else if (weatherType.id == 800) { //Clear
             binding.weatherIcon.setImageResource(R.drawable.icon_weather_sun)
-        } else if(weatherType.id in 801..804) { //Cloud
+        } else if (weatherType.id in 801..804) { //Cloud
             binding.weatherIcon.setImageResource(R.drawable.icon_weather_cloud)
         } else {
             binding.weatherIcon.setImageResource(R.drawable.icon_weather_sun)
@@ -466,7 +475,8 @@ class HomeFragment : Fragment() {
 
     @SuppressWarnings("deprecation")
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {
-        val manager = requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val manager =
+            requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.name == service.service.className) {
                 return true
@@ -491,8 +501,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun changeWeatherToToday() {
-        val todayTypeface: Typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/Inter-Bold.ttf")
-        val tomorrowTypeface: Typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/Inter-Regular.ttf")
+        val todayTypeface: Typeface =
+            Typeface.createFromAsset(requireActivity().assets, "fonts/Inter-Bold.ttf")
+        val tomorrowTypeface: Typeface =
+            Typeface.createFromAsset(requireActivity().assets, "fonts/Inter-Regular.ttf")
 
         binding.today.typeface = todayTypeface
         binding.tomorrow.typeface = tomorrowTypeface
@@ -514,9 +526,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun changeWeatherToTomorrow() {
-        if(::hourlyWeatherData.isInitialized) {
-            val tomorrowTypeface: Typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/Inter-Bold.ttf")
-            val todayTypeface: Typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/Inter-Regular.ttf")
+        if (::hourlyWeatherData.isInitialized) {
+            val tomorrowTypeface: Typeface =
+                Typeface.createFromAsset(requireActivity().assets, "fonts/Inter-Bold.ttf")
+            val todayTypeface: Typeface =
+                Typeface.createFromAsset(requireActivity().assets, "fonts/Inter-Regular.ttf")
 
             binding.tomorrow.typeface = tomorrowTypeface
             binding.today.typeface = todayTypeface
@@ -546,7 +560,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setHorizontalWeatherViewAdapter() {
-        binding.smallWeatherCardView.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
+        binding.smallWeatherCardView.layoutManager =
+            LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
 
         val adapter = HorizontalWeatherAdapter(weatherCardData)
         binding.smallWeatherCardView.adapter = adapter
@@ -560,44 +575,63 @@ class HomeFragment : Fragment() {
     private fun moveToSearch() {
         val intent = Intent(requireActivity(), SearchActivity::class.java)
         startActivity(intent)
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU) {
             requireActivity().overridePendingTransition(R.anim.fadein, R.anim.fadeout)
         } else {
-            requireActivity().overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, R.anim.fadein, R.anim.fadeout)
+            requireActivity().overrideActivityTransition(
+                Activity.OVERRIDE_TRANSITION_OPEN,
+                R.anim.fadein,
+                R.anim.fadeout
+            )
         }
     }
 
     private fun navToUpcomingDaysFrag(cord: String) {
         val loc = cord.split(",")
-        val action = HomeFragmentDirections.navHomeFragToUpcomingDaysFrag(loc[0].trim(), loc[1].trim())
+        val action =
+            HomeFragmentDirections.navHomeFragToUpcomingDaysFrag(loc[0].trim(), loc[1].trim())
         val navHelper = NavigateFragmentUtil()
         navHelper.navigateToFragmentWithAction(requireView(), action)
     }
 
     private fun initWeatherAPIThing() {
-        val weatherService = RetrofitHelper.getInstance(AppConstants.OpenWeatherMap_API_BASE_URL).create(
-            WeatherService::class.java)
+        val weatherService =
+            RetrofitHelper.getInstance(AppConstants.OpenWeatherMap_API_BASE_URL).create(
+                WeatherService::class.java
+            )
         val weatherRepository = WeatherRepository(weatherService)
 
-        weatherViewModel = ViewModelProvider(requireActivity(), WeatherViewModelFactory(weatherRepository))[WeatherViewModel::class.java]
+        weatherViewModel = ViewModelProvider(
+            requireActivity(),
+            WeatherViewModelFactory(weatherRepository)
+        )[WeatherViewModel::class.java]
     }
 
     private fun initHourlyWeatherAPIThing() {
-        val hourlyWeatherService = RetrofitHelper.getInstance(AppConstants.OpenMeteo_API_BASE_URL).create(
-            HourlyWeatherService::class.java
-        )
+        val hourlyWeatherService =
+            RetrofitHelper.getInstance(AppConstants.OpenMeteo_API_BASE_URL).create(
+                HourlyWeatherService::class.java
+            )
         val hourlyWeatherRepository = HourlyWeatherRepository(hourlyWeatherService)
 
-        hourlyWeatherViewModel = ViewModelProvider(requireActivity(), HourlyWeatherViewModelFactory(hourlyWeatherRepository))[HourlyWeatherViewModel::class.java]
+        hourlyWeatherViewModel = ViewModelProvider(
+            requireActivity(),
+            HourlyWeatherViewModelFactory(hourlyWeatherRepository)
+        )[HourlyWeatherViewModel::class.java]
     }
 
     private fun initCurrentLocationThing() {
         //Initialization of CurrentLocationRepository and CurrentLocationServices
-        val currentLocationService = RetrofitHelper.getInstance(AppConstants.CURRENT_LOCATION_API_BASE_URL).create(CurrentLocationService::class.java)
+        val currentLocationService =
+            RetrofitHelper.getInstance(AppConstants.CURRENT_LOCATION_API_BASE_URL)
+                .create(CurrentLocationService::class.java)
         val currentLocationRepository = CurrentLocationRepository(currentLocationService)
 
         //Initialization of CurrentLocationViewModel
-        currentLocationViewModel = ViewModelProvider(requireActivity(), CurrentLocationViewModelFactory(currentLocationRepository))[CurrentLocationViewModel::class.java]
+        currentLocationViewModel = ViewModelProvider(
+            requireActivity(),
+            CurrentLocationViewModelFactory(currentLocationRepository)
+        )[CurrentLocationViewModel::class.java]
 
         //Calling API to get current location
         lifecycleScope.launch {
@@ -635,21 +669,30 @@ class HomeFragment : Fragment() {
         val locationSharedPrefService = LocationSharedPrefService(requireActivity())
         val locationSharedPrefRepository = LocationSharedPrefRepository(locationSharedPrefService)
 
-        locationSharedPrefViewModel = ViewModelProvider(requireActivity(), LocationSharedPrefViewModelFactory(locationSharedPrefRepository))[LocationSharedPrefViewModel::class.java]
+        locationSharedPrefViewModel = ViewModelProvider(
+            requireActivity(),
+            LocationSharedPrefViewModelFactory(locationSharedPrefRepository)
+        )[LocationSharedPrefViewModel::class.java]
     }
 
     private fun initSettingsSharedPrefThing() {
         val settingsSharedPrefService = SettingsSharedPrefService(requireActivity())
         val settingsSharedPrefRepository = SettingsSharedPrefRepository(settingsSharedPrefService)
 
-        settingSharedPrefViewModel = ViewModelProvider(requireActivity(), SettingsSharedPrefViewModelFactory(settingsSharedPrefRepository))[SettingsSharedPrefViewModel::class.java]
+        settingSharedPrefViewModel = ViewModelProvider(
+            requireActivity(),
+            SettingsSharedPrefViewModelFactory(settingsSharedPrefRepository)
+        )[SettingsSharedPrefViewModel::class.java]
     }
 
     private fun initWeatherSharedPrefThing() {
         val weatherSharedPrefService = WeatherSharedPrefService(requireActivity())
         val weatherSharedPrefRepository = WeatherSharedPrefRepository(weatherSharedPrefService)
 
-        weatherSharedPrefViewModel = ViewModelProvider(requireActivity(), WeatherSharedPrefViewModelFactory(weatherSharedPrefRepository))[WeatherSharedPrefViewModel::class.java]
+        weatherSharedPrefViewModel = ViewModelProvider(
+            requireActivity(),
+            WeatherSharedPrefViewModelFactory(weatherSharedPrefRepository)
+        )[WeatherSharedPrefViewModel::class.java]
     }
 
     override fun onDestroy() {

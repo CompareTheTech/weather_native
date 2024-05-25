@@ -15,10 +15,12 @@ import com.comparethetech.weather_native.ui.liveDate.SearchCitiesLiveData
 import com.comparethetech.weather_native.util.CountryNameByCode
 
 
-class SearchCitiesAdapter(private val citiesList: CityLocationData) : Adapter<SearchCitiesAdapter.SearchCitiesViewHolder>() {
+class SearchCitiesAdapter(private val citiesList: CityLocationData) :
+    Adapter<SearchCitiesAdapter.SearchCitiesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchCitiesViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.cities_item_layout, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.cities_item_layout, parent, false)
         return SearchCitiesViewHolder(view)
     }
 
@@ -32,24 +34,28 @@ class SearchCitiesAdapter(private val citiesList: CityLocationData) : Adapter<Se
 
         holder.cityName.text = citiesList[position].name
 
-        val location = (if(citiesList[position].state.isNullOrEmpty()) "" else (citiesList[position].state + ", ")) + CountryNameByCode.getCountryNameByCode(context, citiesList[position].country)
+        val location =
+            (if (citiesList[position].state.isNullOrEmpty()) "" else (citiesList[position].state + ", ")) + CountryNameByCode.getCountryNameByCode(
+                context,
+                citiesList[position].country
+            )
         holder.cityAddress.text = location
 
-        if(citiesList[position].alreadyExist) {
+        if (citiesList[position].alreadyExist) {
             holder.alreadyAdded.setImageResource(R.drawable.icon_right_arrow)
         } else {
-            holder.alreadyAdded.setImageResource(R.drawable .icon_add)
+            holder.alreadyAdded.setImageResource(R.drawable.icon_add)
         }
 
         holder.alreadyAdded.setOnClickListener {
-            if(citiesList[position].alreadyExist) {
+            if (citiesList[position].alreadyExist) {
                 citiesList[position].alreadyExist = !citiesList[position].alreadyExist
                 SearchCitiesLiveData.updateCitiesLiveData(citiesList[position])
                 (context as Activity).finish()
             } else {
                 holder.alreadyAdded.setImageResource(R.drawable.icon_right_arrow)
-                for(i in 0 until itemCount) {
-                    if(citiesList[i].alreadyExist) {
+                for (i in 0 until itemCount) {
+                    if (citiesList[i].alreadyExist) {
                         citiesList[i].alreadyExist = !citiesList[i].alreadyExist
                         notifyItemChanged(i)
                         break

@@ -15,7 +15,7 @@ class WeatherRepository(private val weatherService: WeatherService) {
     suspend fun getWeather(lat: String, lon: String, appId: String) {
         val result = weatherService.getWeather(lat, lon, appId)
 
-        if(result.body() != null) {
+        if (result.body() != null) {
             weatherLiveData.postValue(result.body())
         }
     }

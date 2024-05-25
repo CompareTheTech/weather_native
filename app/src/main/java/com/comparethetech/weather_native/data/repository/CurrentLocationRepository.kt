@@ -15,7 +15,7 @@ class CurrentLocationRepository(private val currentLocationService: CurrentLocat
     suspend fun getLocation() {
         val result = currentLocationService.getApproximateLocation()
 
-        if(result.body() != null) {
+        if (result.body() != null) {
             approximateLocationLiveData.postValue(result.body())
         }
     }

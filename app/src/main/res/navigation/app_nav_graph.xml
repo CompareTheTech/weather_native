@@ -9,7 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.comparethetech.weather_native.ui.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
 
         <action
             android:id="@+id/nav_homeFrag_to_upcomingDaysFrag"
@@ -23,11 +23,13 @@
         android:label="fragment_upcoming_days"
         tools:layout="@layout/fragment_upcoming_days">
 
-        <argument android:name="lat"
-            app:argType="string"/>
+        <argument
+            android:name="lat"
+            app:argType="string" />
 
-        <argument android:name="lon"
-            app:argType="string"/>
+        <argument
+            android:name="lon"
+            app:argType="string" />
 
     </fragment>
 
